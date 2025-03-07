@@ -1,0 +1,15 @@
+[package]
+name = "xml-de-serializer-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.75"
+env_logger = "0.11.6"
+log = "0.4.26"
+quick-xml = { version = "0.37.2", features = ["serialize", "serde", "encoding", "serde-types"] }
+serde = { version = "1.0.189", features = ["derive"] }
+serde_path_to_error = "0.1.17"
+serde_with = "3.4.0"
+serde_xml = "0.9.1"
+
