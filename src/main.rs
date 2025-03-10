@@ -30,20 +30,16 @@ use std::fmt; // Import this
 </Outer>
 
 */
-
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-enum Message {
+enum AnyNode {
     A(A),
     B(B),
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "PascalCase")]
-struct Outer<T>
-where
-    T: std::fmt::Debug,
-{
+struct Outer<T> {
     inner: Inner<T>,
 }
 
@@ -113,5 +109,28 @@ mod tests {
             outer_b.inner.data.some_other_value,
             outer_b_2.inner.data.some_other_value
         );
+    }
+
+    #[test]
+    pub fn test_de_serialize_message_1() {
+        let a = A {
+            some_value: String::from("thats a string"),
+        };
+
+        let outer_message_a = Outer {
+            inner: Inner { data: a },
+        };
+
+        let xml_outer_message_a = to_string(&outer_message_a).unwrap();
+        println!("xml_outer_message_a: {:#?}", xml_outer_message_a);
+
+        let data = from_str::<Outer<AnyNode>>(&xml_outer_message_a).unwrap();
+
+        // let outer_a_2 = from_str::<Outer<A>>(&xml_outer_a).unwrap();
+        //
+        // assert_eq!(
+        //     outer_a.inner.data.some_value,
+        //     outer_a_2.inner.data.some_value
+        // );
     }
 }
